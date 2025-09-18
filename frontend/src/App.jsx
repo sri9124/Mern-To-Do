@@ -21,7 +21,7 @@ function App() {
 
   const fetchTodos = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/todos');
+      const response = await axios.get(`${PROCESS.ENV.BACKEND_URI}/api/todos`);
       setTodos(response.data);
     } catch (error) {
       console.error("Error fetching todos:", error);
@@ -42,7 +42,7 @@ function App() {
     if (!newTodo.trim()) return;
     const datetime = getDateTimeString(newDate, newTime, newAmPm);
     try {
-      const response = await axios.post('http://localhost:5000/api/todos', {
+      const response = await axios.post(`${PROCESS.ENV.BACKEND_URI}/api/todos`, {
         text: newTodo,
         description: newDescription,
         time: datetime
@@ -60,7 +60,7 @@ function App() {
 
   const deleteTodo = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/todos/${id}`);
+      await axios.delete(`${PROCESS.ENV.BACKEND_URI}/api/todos/${id}`);
       setTodos(todos.filter(todo => todo._id !== id));
     } catch (error) {
       console.error("Error deleting todo:", error);
@@ -69,7 +69,7 @@ function App() {
 
   const toggleComplete = async (id, currentCompleted) => {
     try {
-      const response = await axios.patch(`http://localhost:5000/api/todos/${id}`, { completed: !currentCompleted });
+      const response = await axios.patch(`${PROCESS.ENV.BACKEND_URI}/api/todos/${id}`, { completed: !currentCompleted });
       setTodos(todos.map(todo => todo._id === id ? { ...todo, completed: response.data.completed } : todo));
     } catch (error) {
       console.error("Error toggling completion:", error);
@@ -111,7 +111,7 @@ function App() {
     if (!editText.trim()) return;
     const datetime = getDateTimeString(editDate, editTime, editAmPm);
     try {
-      const response = await axios.patch(`http://localhost:5000/api/todos/${id}`, {
+      const response = await axios.patch(`${PROCESS.ENV.BACKEND_URI}/api/todos/${id}`, {
         text: editText,
         description: editDescription,
         time: datetime
